@@ -253,8 +253,8 @@ const Mutation = new GraphQLObjectType({
               );
             })
             .catch((err) => {
-              console.log("Credentails don't exit!");
-              return "Credentails don't exit!";
+              console.log("Credentails do not exist!");
+              return "Credentails do not exist!";
             });
         },
       },
