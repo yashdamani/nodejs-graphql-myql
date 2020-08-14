@@ -1,66 +1,66 @@
-Here's the list to all the GraphQL Queries and Mutations:
+<b><h3>Here's the list to all the GraphQL Queries and Mutations:</h3></b>
 
-1. To add a user
+<b>1. To add a user</b>
 
-mutation addUser{
-  addUser(email:"ketandamani@gmail.com", username: "ketandamani", password: "ketan") {
+<code> mutation addUser{
+  addUser(email:<String>, username: <String>, password: <String>) {
   id
   }
-}
+  } </code>
 
-2. To tweet
+<b>2. To tweet</b>
 
-mutation addTweet{
-  addTweet(userId:3, body:"megha's 3rd tweet") {
+<code> mutation addTweet{
+  addTweet(userId:<Integer>, body:<String>) {
     id
   }
-}
+} </code>
 
-3. To follow a user
+<b>3. To follow a user</b>
 
-mutation follow{
-  follow(userId:1, follower_id:2) {
+<code> mutation follow{
+  follow(userId:<Integer>, follower_id:<Integer>) {
     userId 
   }
-}
+} </code>
 
-4. To see a list of users
+<b>4. To see a list of users</b>
 
-{
+<code> {
   users{
     id username
   }
-}
+} </code>
 
 
-4. To see a list of user's own posts:
-for a given user's id, fetches all the tweets of the user
+<b>5. To see a list of user's own posts:
+for a given user's id, fetches all the tweets of the user</b>
 
-{
-  users(id:1) {
+<code> {
+  users(id:<Integer>) {
     tweets{
       body
     }
   }
-}
+} </code>
 
-5.To see a list of followers:
-for a given user's id, fetches all the followers
+<b>6.To see a list of followers:
+for a given user's id, fetches all the followers</b>
 
-{
-  users(id:1) {
+<code> {
+  users(id:<Integer>) {
     followers{
       user {
         username id email
       }
     }
   }
-}
+} </code>
 
-6. To see a user's followers tweets (feed)
+<b>7. To see a user's followers tweets (feed)</b>
 
-{
-  users(id:1) {
+<code> {
+  users(id:<Integer>) {
     followers{
       user {
         username id
@@ -70,7 +70,7 @@ for a given user's id, fetches all the followers
       }
     }
   }
-}
+} </code>
 
 
 
