@@ -1,33 +1,26 @@
 {
-  "name": "relay-test",
+  "name": "twitter-clone",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ."
+    "start": "pm2 start index.js"
   },
-  "author": "",
+  "author": "Yash Damani",
   "license": "ISC",
   "dependencies": {
-    "apollo-server": "^2.16.1",
-    "apollo-server-express": "^2.16.1",
     "babel-core": "^6.4.5",
     "babel-polyfill": "^6.3.14",
     "babel-preset-node5": "^12.0.1",
     "babel-register": "^6.4.3",
     "babel-relay-plugin": "^0.11.0",
     "bcryptjs": "^2.4.3",
-    "bluebird": "^3.2.1",
     "express": "^4.13.4",
     "express-graphql": "^0.11.0",
-    "faker": "^4.1.0",
     "graphql": "^15.3.0",
-    "graphql-relay": "^0.3.6",
-    "lodash": "^4.17.19",
     "mysql": "^2.18.1",
     "mysql2": "^2.1.0",
-    "pg-hstore": "^2.3.2",
     "sequelize": "^6.3.4"
   }
 }

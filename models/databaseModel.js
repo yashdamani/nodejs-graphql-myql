@@ -1,8 +1,9 @@
 import Conn from "../connections/sqlConnection";
 import Sequelize from "sequelize";
-import Faker from "faker";
-import _ from "lodash";
 
+//SQL SCHEMAS
+
+//Initialize User Schema
 const User = Conn.define("users", {
   username: {
     type: Sequelize.STRING,
@@ -21,6 +22,7 @@ const User = Conn.define("users", {
   },
 });
 
+//Initialize Tweet Schema
 const Tweet = Conn.define("tweets", {
   body: {
     type: Sequelize.STRING(280),
@@ -31,13 +33,10 @@ const Tweet = Conn.define("tweets", {
   },
 });
 
-const Followers = Conn.define("followers", {
-  // following_id: {
-  //   type: Sequelize.INTEGER,
-  //   allowNull: false,
-  // },
-});
+//Initialize Followers Schema
+const Followers = Conn.define("followers", {});
 
+//Relationships
 User.hasMany(Tweet);
 Tweet.belongsTo(User);
 User.hasMany(Followers);
@@ -45,20 +44,7 @@ Followers.belongsTo(User, {
   foreignKey: "follower_id",
 });
 
-// Conn.sync({ force: true }).then(() => {
-//   _.times(10, () => {
-//     return User.create({
-//       username: Faker.internet.userName(),
-//       email: Faker.internet.email(),
-//       password: Faker.internet.password(),
-//     }).then((user) => {
-//       return user.createTweet({
-//         body: `Tweet by ${user.username}`,
-//       });
-//     });
-//   });
-// });
-
+//Sync the database (overwrite disabled)
 Conn.sync({ force: false });
 
-export default Conn ;
+export default Conn;

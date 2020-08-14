@@ -9,7 +9,9 @@ import {
 
 import UserSchema from "../models/databaseModel";
 import bcrypt from "bcryptjs";
-const saltRounds = 10;
+import config from "../Config/config";
+
+//GraphQL API Schemas
 
 //User Schema
 const User = new GraphQLObjectType({
@@ -33,12 +35,6 @@ const User = new GraphQLObjectType({
         type: GraphQLString,
         resolve(user) {
           return user.email;
-        },
-      },
-      password: {
-        type: GraphQLString,
-        resolve(user) {
-          return user.password;
         },
       },
       tweets: {
@@ -86,6 +82,8 @@ const Tweet = new GraphQLObjectType({
   },
 });
 
+//Followers Schema
+
 const Followers = new GraphQLObjectType({
   name: "Followers",
   description: "Followers",
@@ -119,6 +117,8 @@ const Followers = new GraphQLObjectType({
   },
 });
 
+//GraphQL Queries (GET)
+
 const Query = new GraphQLObjectType({
   name: "Query",
   description: "Root query object",
@@ -135,9 +135,7 @@ const Query = new GraphQLObjectType({
           },
         },
         resolve(_, args) {
-          return UserSchema.models.users.findAll({
-            where: args,
-          });
+          return UserSchema.models.users.findAll({ where: args });
         },
       },
       tweets: {
@@ -151,34 +149,12 @@ const Query = new GraphQLObjectType({
           return UserSchema.models.tweets.findAll({ where: args });
         },
       },
-      // followersList: {
-      //   type: new GraphQLList(Followers),
-      //   args: {
-      //     userId: {
-      //       type: GraphQLInt,
-      //     },
-      //   },
-      //   resolve(root, args) {
-      //     return UserSchema.models.followers.findAll({ where: args });
-      //   },
-      // },
       allUsers: {
         type: new GraphQLList(User),
         resolve(_, args) {
           return UserSchema.models.users.findAll({ where: args });
         },
       },
-      // feedTweets: {
-      //   type: new GraphQLList(Tweet),
-      //   args: {
-      //     userId: {
-      //       type: new GraphQLList(GraphQLInt),
-      //     },
-      //   },
-      //   resolve(root, args) {
-      //     return UserSchema.models.tweets.findAll({ where: args });
-      //   },
-      // },
     };
   },
 });
@@ -202,15 +178,11 @@ const Mutation = new GraphQLObjectType({
           },
         },
         resolve(_, args) {
-          return UserSchema.models.users
-            .create({
-              username: args.username,
-              email: args.email.toLowerCase(),
-              password: bcrypt.hashSync(args.password, saltRounds),g
-            })
-            .then((result) => {
-              consoe;
-            });
+          return UserSchema.models.users.create({
+            username: args.username,
+            email: args.email.toLowerCase(),
+            password: bcrypt.hashSync(args.password, config.SALT_ROUNDS),
+          });
         },
       },
       addTweet: {
@@ -289,105 +261,6 @@ const Mutation = new GraphQLObjectType({
     };
   },
 });
-
-// const Mutation = new GraphQLObjectType({
-//   name: "Mutation",
-//   description: "Adds a User",
-//   fields() {
-//     return {
-//       addUser: {
-//         type: Users,
-//         args: {
-//           username: {
-//             type: new GraphQLNonNull(GraphQLString),
-//           },
-//           email: {
-//             type: new GraphQLNonNull(GraphQLString),
-//           },
-//           password: {
-//             type: new GraphQLNonNull(GraphQLString),
-//           },
-//         },
-//         resolve(_, args) {
-//           let hash = bcrypt.hashSync(args.password, 10);
-//           return UserSchema.models.users
-//             .create({
-//               username: args.username,
-//               email: args.email.toLowerCase(),
-//               password: hash,
-//               createdAt: new Date().toISOString(),
-//             })
-//             .catch(Sequelize.ValidationError, (err) => {
-//               console.log(err.message);
-//               return err.message;
-//             });
-//         },
-//       },
-//       addTweet: {
-//         type: Tweet,
-//         args: {
-//           user_id: {
-//             type: new GraphQLNonNull(GraphQLInt),
-//           },
-//           body: {
-//             type: new GraphQLNonNull(GraphQLString),
-//           },
-//         },
-//         resolve(_, args) {
-//           return UserSchema.models.tweets
-//             .create({
-//               user_id: args.user_id,
-//               body: args.body,
-//               createdAt: new Date().toISOString(),
-//             })
-//             .catch(Sequelize.ValidationError, (err) => {
-//               console.log(err.message);
-//               return err.message;
-//             });
-//         },
-//       },
-
-// followUser: {
-//   type: Followers,
-//   args: {
-//     user_id: {
-//       type: new GraphQLNonNull(GraphQLInt),
-//     },
-//     following_id: {
-//       type: new GraphQLNonNull(GraphQLInt),
-//     },
-//   },
-//   resolve(_, args) {
-//     return UserSchema.models.followers.create({
-//       user_id: args.user_id,
-//       following_id: args.following_id,
-//       followedAt: new Date().toISOString(),
-//     });
-//   },
-// },
-
-// login: {
-//   type: Users,
-//   args: {
-//     email: {
-//       type: new GraphQLNonNull(GraphQLString),
-//     },
-//     password: {
-//       type: new GraphQLNonNull(GraphQLString),
-//     },
-//   },
-//   resolve(_, args) {
-//     const hash = bcrypt.hashSync(args.password, 10);
-//     const user = UserSchema.models.users.findOne({
-//       where: { email: args.email, password: hash },
-//     });
-//     if (!user) throw err;
-//     return user;
-//   },
-// },
-//     };
-//   },
-// });
 
 const Schema = new GraphQLSchema({
   query: Query,
